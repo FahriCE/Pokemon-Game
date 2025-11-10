@@ -1,0 +1,115 @@
+@startuml
+
+class Pokemon {
+    - _name : String
+    - _hp : Integer
+    - _hpMax : Integer
+    - _power : Integer
+    - _type : Type
+
+    + <<create>> Pokemon(name:String, hpMax:Integer, power:Integer, type : Type)
+    + attack(target : Pokemon)
+    + getName() : String
+    + getHp() : Integer
+    + getHpMax() : Integer
+    + getPower() : Integer
+    + getType() : Type
+    + getStat() : String
+    + isAlive() : Boolean
+    + toString() : String
+}
+
+class Player {
+    - _name : String
+    - _deck : List<Pokemon>
+    - _pioche : List<Pokemon>
+    - _pokemonSurTerrain : List<Pokemon>
+    - _defausse : List<Pokemon>
+
+    + <<create>> Player(name:String)
+    + setDeck(pokemonList:List<Pokemon>)
+    + addDefausse(pokemonDefausse:Pokemon)
+    + get Deck() : List<Pokemon>
+    + getDefausse() : List<Pokemon>
+    + getPioche() : List<Pokemon>
+    + getPokemonSurTerrain() : List<Pokemon>
+    + getNom() : String
+    + attack(opponent:Player)
+    + pioche()
+    + envoiePokemon()
+    + testPokemonDefausse(opponent:Player)
+    + choseOpponentPokemon(opponent:Player) : Integer
+    + showPioche()
+    + showCardNumber()
+    + toString() : String
+
+}
+
+class Battle {
+    - _round : Integer
+    - _isPlayerFirst : Boolean
+    - _joueur : Player
+    - _ordinateur : Player
+    - _playerList : List<Player>
+
+    + <<create>> Battle(player:(player:Player, ordinateur:Player)
+    + firstPlayer()
+    + fight()
+    + whoPlay() : Player
+    + whoNotPlay() : Player
+    + isGameEnd() : Boolean
+    + toString() : String
+
+}
+
+class IO {
+    + {static} battleScene(player:Player, ordinateur:Player, isPlayerFirst:Boolean, rount:Integer)
+    + {static} showPioche(player:Player)
+    + {static} showBattleStat(player:Player)
+    + {static} attack(attacker:Pokemon, target : Pokemon)
+    + {static} whoPlay(player:Player, ordinateur:Player, isPlayerFirst:Boolean, round:Integer) : Player
+    + {static} showPokemonToPlay(player:Player)
+    + {static} showPokemonToAttack(opponent:Player)
+    + {static} gameEnd(winner:Player)
+}
+
+class Main {
+    + {static} main(args[]:String)
+}
+
+class GameSetUp {
+    - _isFirst : Boolean
+    - _pokemonName : List<String>
+    - _firstPlayerCardNumber : Integer
+    - _secondPlayerCardNumber : Integer
+
+    + setPlayerDeckPokemon(player:Player)
+    + toString() : String
+
+}
+
+enum Type {
+    TERRE,
+    EAU,
+    FEU,
+    AIR;
+
+    + <<create>> Type(type:String, id:Integer)
+    + getType() : String
+    + getId() : Integer
+    + toString() : String
+
+}
+
+Main --> Battle
+Battle --> GameSetUp
+GameSetUp -> Player
+Player "1" *- "0..21" Pokemon : possède
+Battle "2" -- "1" Player
+Battle o-- Player
+Pokemon o- Type
+IO <-- Battle
+IO <-- Player
+
+
+@enduml
